@@ -8,6 +8,8 @@ use App\Models\MemoTag;
 use App\Models\Tag;
 use DB;
 
+use function PHPUnit\Framework\isEmpty;
+
 class HomeController extends Controller
 {
     /**
@@ -82,7 +84,7 @@ class HomeController extends Controller
         $posts = $request->all(); //formで投げられた内容を全て取得する
         // dd($posts); //dump dieの略、メソッドの引数のとった値を展開して止める、デバッグ関数
         // dd(\Auth::id());ログインユーザーIDが取れているかの確認
-        
+
         //バリデーション(contentの中は必須やで(空やとできひんで))
         $request->validate(['content' => 'required']);
         //トランザクション開始
@@ -123,8 +125,11 @@ class HomeController extends Controller
             MemoTag::where('memo_id', '=', $posts['memo_id'])
                 ->delete();
             //再度メモとタグの紐付け
-            foreach ($posts['tags'] as $tag) {
-                MemoTag::insert(['memo_id' => $posts['memo_id'], 'tag_id' => $tag]);
+            // dd($posts);
+            if (!isEmpty($posts['tags'])) {
+                foreach ($posts['tags'] as $tag) {
+                    MemoTag::insert(['memo_id' => $posts['memo_id'], 'tag_id' => $tag]);
+                } # code...
             }
             //もし、新しいタグの紐付けがあれば、インサートして紐づける
             $tag_exists = Tag::where('user_id', '=', \Auth::id())->where('name', '=', $posts['new_tag'])

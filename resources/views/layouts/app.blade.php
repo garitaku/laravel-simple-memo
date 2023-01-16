@@ -20,6 +20,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/layout.css">
 </head>
 
 <body>
@@ -84,36 +86,36 @@
 
         {{-- {{dd($tags)}} --}}
         <main class="">
-            <div class="row">
-                <div class="col-md-2 p-0">
+            <div class="row gx-0">
+                <div class="col-sm-12 col-md-2 p-0">
                     <div class="card">
                         <div class="card-header">
                             タグ一覧
                         </div>
-                        <div class="card-body">
+                        <div class="card-body my-card-body">
                             <a href="/" class="card-text d-block">全て表示</a>
                             @foreach ($tags as $tag)
                                 {{-- クエリパラメータ付きルーティング --}}
-                                <a href="/?tag={{ $tag['id'] }}" class="card-text d-block">{{ $tag['name'] }}</a>
+                                <a href="/?tag={{ $tag['id'] }}" class="card-text d-block elipsis mb-2">{{ $tag['name'] }}</a>
                             @endforeach
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 p-0">
+                <div class="col-sm-12 col-md-4 p-0">
                     <div class="card">
-                        <div class="card-header">
-                            メモ一覧
+                        <div class="card-header d-flex justify-content-between">
+                            メモ一覧<a href="{{ route('home') }}"><i class="bi bi-plus-circle"></i></a>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body my-card-body">
                             @foreach ($memos as $memo)
                                 <a href="/edit/{{ $memo['id'] }}"
-                                    class="card-text d-block">{{ $memo['content'] }}</a>
+                                    class="card-text d-block elipsis mb-2">{{ $memo['content'] }}</a>
                             @endforeach
 
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 p-0">
+                <div class="col-sm-12 col-md-6 p-0">
                     @yield('content')
                 </div>
             </div>

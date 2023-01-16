@@ -1,0 +1,19 @@
+.my-card-body {
+    /* 表示される部分 - (headerのpx + cardheaderのpx)検証にて確認 */
+    height: calc(100vh - (55px + 40px));
+}
+
+/* このクラスを当てることで一行になる */
+.elipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* もし最大画面幅が768px以下であれば */
+@media screen and (max-width: 768px) {
+    .my-card-body{
+        height: auto;
+        max-height: 50vh;
+    }
+}

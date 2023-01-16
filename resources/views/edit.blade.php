@@ -3,24 +3,27 @@
     {{-- editの時のみこのjsファイルを読み込む --}}
     <script src="/js/confirm.js"></script>
 @endsection
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+
 @section('content')
     <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between">
             メモ編集
-            <form class="card-body" id="delete-form" action="{{ route('destroy') }}" method="POST">
+            <form class="m-0" id="delete-form" action="{{ route('destroy') }}" method="POST">
                 @csrf
                 <input type="hidden" name="memo_id" value="{{ $edit_memo[0]['id'] }}">
-                <button type="submit" onclick="deleteHandle(event);">削除</button>
+                <i class="bi bi-trash mr-3" onclick="deleteHandle(event);"></i>
             </form>
         </div>
         {{-- {{ route('store') }}と書くと→/store --}}
         {{-- {{}}のなかでbladeテンプレートの中でphpの関数や変数を展開できる --}}
-        <form class="card-body" action="{{ route('update') }}" method="POST">
+        <form class="card-body my-card-body" action="{{ route('update') }}" method="POST">
             {{-- @csrf:なりすまし防止(フォームを使用する場合必要) --}}
             @csrf
             {{-- 更新に必要なメモIDをhiddenで隠し持って教えてあげる --}}
             <input type="hidden" name="memo_id" value="{{ $edit_memo[0]['id'] }}">
-            <div class="">
+            <div class="form-group">
                 <textarea class="form-control" name="content" rows="3" placeholder="ここにメモを入力">{{ $edit_memo[0]['content'] }}</textarea>
             </div>
             {{-- エラー処理 --}}
@@ -37,7 +40,7 @@
                     <label class="form-check-label" for="{{ $tag['id'] }}">{{ $tag['name'] }}</label>
                 </div>
             @endforeach
-            <input type="text" class="form-control w-50 mb-3" name="new_tag" placeholder="新しいタグを入力">
+            <input type="text" class="form-control w-50" name="new_tag" placeholder="新しいタグを入力">
             <button type="submit" class="btn btn-primary">更新</button>
         </form>
     </div>

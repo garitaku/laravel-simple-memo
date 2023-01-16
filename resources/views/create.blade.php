@@ -7,12 +7,13 @@
         </div>
         {{-- {{ route('store') }}と書くと→/store --}}
         {{-- {{}}のなかでbladeテンプレートの中でphpの関数や変数を展開できる --}}
-        <form class="card-body" action="{{ route('store') }}" method="POST">
+        <form class="card-body my-card-body" action="{{ route('store') }}" method="POST">
             {{-- @csrf:なりすまし防止(フォームを使用する場合必要) --}}
             @csrf
-            <div class="">
-                <textarea class="form-control mb-3" name="content" rows="3" placeholder="ここにメモを入力"></textarea>
+            <div class="form-group">
+                <textarea class="form-control" name="content" rows="3" placeholder="ここにメモを入力"></textarea>
             </div>
+
             {{-- エラー処理(contentでエラーが出たら、、、) --}}
             @error('content')
                 <div class="alert alert-danger">メモ内容を入力してください！</div>

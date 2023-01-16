@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('javascript')
+    <script src="/js/confirm.js"></script>
+@endsection
 @section('content')
     <div class="card">
         <div class="card-header">
@@ -7,7 +9,7 @@
             <form class="card-body" action="{{ route('destroy') }}" method="POST">
                 @csrf
                 <input type="hidden" name="memo_id" value="{{ $edit_memo[0]['id'] }}">
-                <button type="submit">削除</button>
+                <button type="submit" onclick="deleteHandle(e);">削除</button>
             </form>
         </div>
         {{-- {{ route('store') }}と書くと→/store --}}
@@ -20,6 +22,11 @@
             <div class="">
                 <textarea class="form-control" name="content" rows="3" placeholder="ここにメモを入力">{{ $edit_memo[0]['content'] }}</textarea>
             </div>
+            {{-- エラー処理 --}}
+            @error('content')
+                <div class="alert alert-danger">メモ内容を入力してください！</div>
+            @enderror
+            {{-- エラー処理ここまで --}}
             @foreach ($tags as $tag)
                 <div class="form-check form-check-inline mb-3">
                     {{-- 3項演算子を使用して、タグのチェックをつける{{条件 ? true : false}} --}}

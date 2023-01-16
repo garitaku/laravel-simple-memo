@@ -13,6 +13,10 @@
             <div class="">
                 <textarea class="form-control mb-3" name="content" rows="3" placeholder="ここにメモを入力"></textarea>
             </div>
+            {{-- エラー処理(contentでエラーが出たら、、、) --}}
+            @error('content')
+                <div class="alert alert-danger">メモ内容を入力してください！</div>
+            @enderror
             @foreach ($tags as $tag)
                 <div class="form-check form-check-inline mb-3">
                     <input class="form-check-input" type="checkbox" name="tags[]" id="{{ $tag['id'] }}"

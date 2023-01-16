@@ -27,12 +27,13 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //AppServiceProvider.phpに記載した為コメントアウト
         //ここでメモデータを取得
-        $memos = Memo::select('memos.*') //めもてーぶるの全部
-            ->where('user_id', '=', \Auth::id()) //自分のゆーざーIDで絞り込み
-            ->whereNull('deleted_at') //かつデリートされてないメモ
-            ->orderBy('updated_at', 'DESC') //並び順 ASC=小さい順、DESC=大きい順(新しいもの順)
-            ->get();
+        // $memos = Memo::select('memos.*') //めもてーぶるの全部
+        //     ->where('user_id', '=', \Auth::id()) //自分のゆーざーIDで絞り込み
+        //     ->whereNull('deleted_at') //かつデリートされてないメモ
+        //     ->orderBy('updated_at', 'DESC') //並び順 ASC=小さい順、DESC=大きい順(新しいもの順)
+        //     ->get();
 
         $tags = Tag::select('tags.*')
             ->where('user_id', '=', \Auth::id())
@@ -41,17 +42,12 @@ class HomeController extends Controller
             ->get();
         // dd($tags);
 
-        return view('create', compact('memos', 'tags')); //viewに取得したメモデータを渡す
+        return view('create', compact('tags')); //viewに取得したメモデータを渡す
     }
 
     public function edit($id)
     {
-        //ここでメモデータを取得(メモ一覧用)
-        $memos = Memo::select('memos.*') //めもてーぶるの全部
-            ->where('user_id', '=', \Auth::id()) //自分のゆーざーIDで絞り込み
-            ->whereNull('deleted_at') //かつデリートされてないメモ
-            ->orderBy('updated_at', 'DESC') //並び順 ASC=小さい順、DESC=大きい順(新しいもの順)
-            ->get();
+        //AppServiceProvider.phpに記載した為コメントアウト->その後Memoモデルに記載
 
         $tags = Tag::select('tags.*') //タグテーブルの全部
             ->where('user_id', '=', \Auth::id()) //自分のゆーざーIDで絞り込み
@@ -78,7 +74,7 @@ class HomeController extends Controller
         // dd($include_tags);
         //viewに取得したメモデータを渡す(メモ一覧、選ばれたメモ、選ばれたメモにひっついてるタグ(配列)、タグ一覧)
         // dd($memos, $edit_memo, $include_tags, $tags);
-        return view('edit', compact('memos', 'edit_memo', 'include_tags', 'tags'));
+        return view('edit', compact('edit_memo', 'include_tags', 'tags'));
     }
 
     public function store(Request $request)
@@ -86,6 +82,9 @@ class HomeController extends Controller
         $posts = $request->all(); //formで投げられた内容を全て取得する
         // dd($posts); //dump dieの略、メソッドの引数のとった値を展開して止める、デバッグ関数
         // dd(\Auth::id());ログインユーザーIDが取れているかの確認
+        
+        //バリデーション(contentの中は必須やで(空やとできひんで))
+        $request->validate(['content' => 'required']);
         //トランザクション開始
         DB::transaction(function () use ($posts) {
             //メモをインサートしつつIDを取得(インサートしてそのIDを変数に入れる)
@@ -116,8 +115,7 @@ class HomeController extends Controller
         $posts = $request->all(); //formで投げられた内容を全て取得する
         // dd($posts);//dump dieの略、メソッドの引数のとった値を展開して止める、デバッグ関数
         // dd(\Auth::id());ログインユーザーIDが取れているかの確認
-
-
+        $request->validate(['content' => 'required']);
         //トランザクション開始
         DB::transaction(function () use ($posts) {
             Memo::where('id', '=', $posts['memo_id'])->update(['content' => $posts['content']]);
